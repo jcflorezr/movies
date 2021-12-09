@@ -25,9 +25,10 @@ class UserRatingController(
         @PathVariable(value = "movieId") movieId: String,
         @RequestBody userRatingRequest: UserRatingRequest
     ): ResponseEntity<Map<String, String>> {
-        val movie = movieService.findByMovieId(movieId)
-        userRatingService.saveUserRating(userRatingRequest.toEntity(movie))
-        return ResponseEntity.ok(mapOf("result" to "SUCCESS"))
+        return movieService.findByMovieId(movieId)?.let { movie ->
+            userRatingService.saveUserRating(userRatingRequest.toEntity(movie))
+            ResponseEntity.ok(mapOf("result" to "SUCCESS"))
+        } ?: ResponseEntity.notFound().build()
     }
 
 }

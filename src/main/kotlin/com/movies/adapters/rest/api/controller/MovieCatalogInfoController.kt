@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 
+@RestController
+@RequestMapping("/api/v1")
 class MovieCatalogInfoController(
     private val movieCatalogInfoService: MovieCatalogInfoService,
     private val movieService: MovieService
@@ -21,8 +25,9 @@ class MovieCatalogInfoController(
     @ResponseBody
     @GetMapping(value = ["/movies/{movieId}/catalog-info"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findCatalogInfoByMovieId(@PathVariable(value = "movieId") movieId: String): ResponseEntity<MovieCatalogInfoResponse> {
-        val movie = movieCatalogInfoService.findByMovieId(movieId)
-        return ResponseEntity.ok(MovieCatalogInfoResponse.fromEntity(movie))
+        return movieCatalogInfoService.findByMovieId(movieId)?.let { catalog ->
+            ResponseEntity.ok(MovieCatalogInfoResponse.fromEntity(catalog))
+        } ?: ResponseEntity.notFound().build()
     }
 
     @ResponseBody
@@ -31,9 +36,10 @@ class MovieCatalogInfoController(
         @PathVariable(value = "movieId") movieId: String,
         @RequestBody movieCatalogInfoRequest: MovieCatalogInfoRequest
     ): ResponseEntity<Map<String, String>> {
-        val movie = movieService.findByMovieId(movieId)
-        movieCatalogInfoService.saveMovieCatalogInfo(movieCatalogInfoRequest.toEntity(movie))
-        return ResponseEntity.ok(mapOf("result" to "SUCCESS"))
+        return movieService.findByMovieId(movieId)?.let { movie ->
+            movieCatalogInfoService.saveMovieCatalogInfo(movieCatalogInfoRequest.toEntity(movie))
+            ResponseEntity.ok(mapOf("result" to "SUCCESS"))
+        } ?: ResponseEntity.notFound().build()
     }
 
     @ResponseBody
@@ -42,9 +48,10 @@ class MovieCatalogInfoController(
         @PathVariable(value = "movieId") movieId: String,
         @RequestBody movieCatalogInfoRequest: MovieCatalogInfoRequest
     ): ResponseEntity<MovieCatalogInfoResponse> {
-        val movie = movieService.findByMovieId(movieId)
-        val updatedMovieCatalogInfo =
-            movieCatalogInfoService.updateMovieCatalogInfo(movieCatalogInfoRequest.toEntity(movie))
-        return ResponseEntity.ok(MovieCatalogInfoResponse.fromEntity(updatedMovieCatalogInfo))
+        return movieService.findByMovieId(movieId)?.let { movie ->
+            val movieCatalogInfo = movieCatalogInfoRequest.toEntity(movie)
+            movieCatalogInfoService.saveMovieCatalogInfo(movieCatalogInfo)
+            ResponseEntity.ok(MovieCatalogInfoResponse.fromEntity(movieCatalogInfo))
+        } ?: ResponseEntity.notFound().build()
     }
 }

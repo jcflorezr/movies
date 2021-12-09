@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 
 interface MovieCatalogInfoService {
 
-    fun findByMovieId(movieId: String): MovieCatalogInfo
+    fun findByMovieId(movieId: String): MovieCatalogInfo?
     fun saveMovieCatalogInfo(movieCatalog: MovieCatalogInfo)
     fun updateMovieCatalogInfo(movieCatalog: MovieCatalogInfo): MovieCatalogInfo
 }
@@ -17,7 +17,7 @@ class MovieCatalogInfoServiceImpl(
     private val movieCatalogInfoDao: MovieCatalogInfoDao
 ) : MovieCatalogInfoService {
 
-    override fun findByMovieId(movieId: String): MovieCatalogInfo =
+    override fun findByMovieId(movieId: String): MovieCatalogInfo? =
         movieCatalogInfoDao.findByMovieId(movieId).toEntity()
 
     override fun saveMovieCatalogInfo(movieCatalog: MovieCatalogInfo) {

@@ -12,6 +12,6 @@ data class MovieCatalogInfoRequest (
         MovieCatalogInfo(
             movie = movie,
             price = StringVO(price, 1, 10, "moviePrice"),
-            showTime = StringVO(showTime, 1, 10, "movieShowTime")
+            showTime = StringVO(showTime, 1, 100, "movieShowTime")
         )
 }

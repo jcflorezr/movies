@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 
 interface MovieService {
 
-    fun findByMovieId(movieId: String): Movie
+    fun findByMovieId(movieId: String): Movie?
 }
 
 @Service
@@ -16,7 +16,7 @@ class MovieServiceImpl(
     private val omDbClient: OMDbClient
 ) : MovieService {
 
-    override fun findByMovieId(movieId: String): Movie =
+    override fun findByMovieId(movieId: String): Movie? =
         movieDao.findByImdbId(movieId)?.toEntity()
             ?: omDbClient.retrieveMovie(movieId).toEntity()
 

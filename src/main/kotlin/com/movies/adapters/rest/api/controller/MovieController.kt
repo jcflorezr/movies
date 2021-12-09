@@ -20,8 +20,9 @@ class MovieController(
     @ResponseBody
     @GetMapping(value = ["/movies/{movieId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findMovieByMovieId(@PathVariable(value = "movieId") movieId: String): ResponseEntity<MovieResponse> {
-        val movie = movieService.findByMovieId(movieId)
-        return ResponseEntity.ok(MovieResponse.fromEntity(movie))
+        return movieService.findByMovieId(movieId)
+            ?.let { movie -> ResponseEntity.ok(MovieResponse.fromEntity(movie)) }
+            ?: ResponseEntity.notFound().build()
     }
 
 }

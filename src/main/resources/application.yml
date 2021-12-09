@@ -4,3 +4,8 @@ server:
 spring:
   application:
     name: movies
+
+client:
+  omdb:
+    url: ${OMDB_SERVICE_URL:omdb-url}
+    api-key: ${OMDB_SERVICE_API_KEY:omdb-api-key}
