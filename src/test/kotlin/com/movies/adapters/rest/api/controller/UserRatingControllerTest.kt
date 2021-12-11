@@ -73,7 +73,7 @@ internal class UserRatingControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage.errorCode").value("invalid_field_value"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage.message").value("value is empty"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage.fieldName").value("userName"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage.fieldName").value("moviegoerName"))
         }
 
         @Test

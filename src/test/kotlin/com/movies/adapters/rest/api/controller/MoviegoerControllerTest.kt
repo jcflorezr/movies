@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.testcontainers.shaded.org.apache.commons.lang.StringUtils
 
 @SpringJUnitConfig
 @WebMvcTest(controllers = [MoviegoerController::class])
@@ -62,13 +63,13 @@ internal class MoviegoerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errorMessage.errorCode").value("invalid_field_value"))
                 .andExpect(jsonPath("$.errorMessage.message").value("value is empty"))
-                .andExpect(jsonPath("$.errorMessage.fieldName").value("userName"))
+                .andExpect(jsonPath("$.errorMessage.fieldName").value("moviegoerName"))
         }
 
         @Test
         @DisplayName("Should return HTTP 400 due to invalid Moviegoer name")
         fun invalidMoviegoerName() {
-            val invalidMoviegoerName = "Moviegoeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer"
+            val invalidMoviegoerName = StringUtils.repeat( "Moviegoer", 100)
             val dummyRequest = DummyMoviegoerRequest.createNew(moviegoerName = invalidMoviegoerName)
             val requestPayload: String = objectMapper.writeValueAsString(dummyRequest)
 
@@ -79,8 +80,8 @@ internal class MoviegoerControllerTest {
                 .andExpect(status().isBadRequest)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errorMessage.errorCode").value("invalid_field_value"))
-                .andExpect(jsonPath("$.errorMessage.message").value("value is less than 1 characters or greater than 50 characters."))
-                .andExpect(jsonPath("$.errorMessage.fieldName").value("userName"))
+                .andExpect(jsonPath("$.errorMessage.message").value("value is less than 2 characters or greater than 500 characters."))
+                .andExpect(jsonPath("$.errorMessage.fieldName").value("moviegoerName"))
         }
     }
 }

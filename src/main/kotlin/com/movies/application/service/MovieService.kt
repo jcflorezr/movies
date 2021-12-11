@@ -1,6 +1,7 @@
 package com.movies.application.service
 
 import com.movies.adapters.daos.MovieDao
+import com.movies.adapters.daos.row.MovieRow
 import com.movies.adapters.rest.client.ombd.OMDbClient
 import com.movies.domain.entity.Movie
 import org.springframework.stereotype.Service
@@ -19,5 +20,9 @@ class MovieServiceImpl(
     override fun findByMovieId(movieId: String): Movie? =
         movieDao.findByImdbId(movieId)?.toEntity()
             ?: omDbClient.retrieveMovie(movieId).toEntity()
+                .let { movieEntity ->
+                    movieDao.save(MovieRow.fromEntity(movieEntity))
+                    movieEntity
+                }
 
 }

@@ -17,7 +17,7 @@ data class Movie(
     val country: StringVO,
     val poster: StringVO,
     val imdbRating: StringVO,
-    val imdbID: StringVO,
+    val imdbId: StringVO,
     val production: StringVO,
     val website: StringVO,
     val ratings: List<Rating>

@@ -11,7 +11,7 @@ data class MovieCatalogInfoRequest (
     fun toEntity(movie: Movie) =
         MovieCatalogInfo(
             movie = movie,
-            price = StringVO(price, 1, 10, "moviePrice"),
-            showTime = StringVO(showTime, 1, 100, "movieShowTime")
+            price = StringVO(price, 1, 500, "moviePrice"),
+            showTime = StringVO(showTime, 1, 500, "movieShowTime")
         )
 }

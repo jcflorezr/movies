@@ -9,5 +9,5 @@ data class MoviegoerRequest(
 ) {
 
     fun toEntity() =
-        Moviegoer(userName = StringVO(userName, 1, 50, "userName"))
+        Moviegoer(userName = StringVO(userName, 2, 500, "moviegoerName"))
 }

@@ -5,6 +5,30 @@ spring:
   application:
     name: movies
 
+  datasource:
+    username: ${MOVIES_DB_USERNAME:test}
+    password: ${MOVIES_DB_PASSWORD:test}
+    url:
+      jdbc:postgresql://${MOVIES_DB_HOST:localhost}:${MOVIES_DB_PORT:5432}/${MOVIES_DB_NAME:postgres}?currentSchema=${MOVIES_DB_SCHEMA:movies}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connectionTimeout: 300000
+      idleTimeout: 60000
+      maxLifetime: 1800000
+      maximumPoolSize: 4
+
+  jpa:
+    show-sql: true
+    format-sql: true
+    open-in-view: false
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        current_session_context_class: thread
+        ddl-auto: update
+
 client:
   omdb:
     url: ${OMDB_SERVICE_URL:omdb-url}

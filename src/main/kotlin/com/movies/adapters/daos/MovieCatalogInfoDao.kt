@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param
 
 interface MovieCatalogInfoDao : JpaRepository<MovieCatalogInfoRow, Int> {
 
-    @Query("SELECT m FROM MovieCatalogInfoRow m WHERE m.movieId = :movieId")
-    fun findByMovieId(@Param("movieId") movieId: String): MovieCatalogInfoRow
+    @Query("SELECT m FROM MovieCatalogInfoRow m WHERE m.movie.imdbId = :movieId")
+    fun findByMovieId(@Param("movieId") movieId: String): MovieCatalogInfoRow?
 }

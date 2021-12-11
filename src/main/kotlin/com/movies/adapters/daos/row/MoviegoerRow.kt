@@ -12,7 +12,7 @@ import javax.persistence.Table
 class MoviegoerRow (
     @Id
     @Column(name = "USER_NAME")
-    val userName: String
+    val userName: String? = null
 ) {
 
     companion object {
@@ -23,9 +23,9 @@ class MoviegoerRow (
     fun toEntity(): Moviegoer =
         Moviegoer(
             userName = StringVO(
-                value = userName,
+                value = userName!!,
                 minLength = 2,
-                maxLength = 50,
+                maxLength = 500,
                 fieldName = "moviegoerName"
             )
         )

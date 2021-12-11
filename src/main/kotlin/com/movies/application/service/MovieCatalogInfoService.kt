@@ -18,7 +18,7 @@ class MovieCatalogInfoServiceImpl(
 ) : MovieCatalogInfoService {
 
     override fun findByMovieId(movieId: String): MovieCatalogInfo? =
-        movieCatalogInfoDao.findByMovieId(movieId).toEntity()
+        movieCatalogInfoDao.findByMovieId(movieId)?.toEntity()
 
     override fun saveMovieCatalogInfo(movieCatalog: MovieCatalogInfo) {
         movieCatalogInfoDao.save(MovieCatalogInfoRow.fromEntity(movieCatalog))

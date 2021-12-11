@@ -13,9 +13,9 @@ data class UserRatingRequest(
 
     fun toEntity(movie: Movie) =
         UserRating(
-            rating = StringVO(rating, 1, 10, "moviegoerRating"),
-            comments = StringVO(comments, 1, 500, "moviegoerComments"),
-            moviegoer = Moviegoer(userName = StringVO(moviegoerId, 1, 50, "userName")),
+            rating = StringVO(rating, 1, 500, "userRating"),
+            comments = StringVO(comments, 1, 500, "userComments"),
+            moviegoer = Moviegoer(userName = StringVO(moviegoerId, 2, 500, "moviegoerName")),
             movie = movie
         )
 }

@@ -40,7 +40,7 @@ data class MovieResponse(
                     language = language.value,
                     country = country.value,
                     poster = poster.value,
-                    imdbID = imdbID.value,
+                    imdbID = imdbId.value,
                     imdbRating = imdbRating.value,
                     production = production.value,
                     website = website.value,

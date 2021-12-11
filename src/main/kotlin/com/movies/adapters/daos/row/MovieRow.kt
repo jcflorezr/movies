@@ -3,12 +3,14 @@ package com.movies.adapters.daos.row
 import com.movies.domain.entity.Movie
 import com.movies.domain.entity.Rating
 import com.movies.domain.vo.StringVO
+import java.util.*
+import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
+import javax.persistence.FetchType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
 
@@ -16,28 +18,26 @@ import javax.persistence.Table
 @Table(name = "MOVIE")
 class MovieRow(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null,
-    @Column(name = "TITLE") val title: String,
-    @Column(name = "YEAR") val year: String,
-    @Column(name = "RATED") val rated: String,
-    @Column(name = "RELEASED") val released: String,
-    @Column(name = "RUNTIME") val runtime: String,
-    @Column(name = "GENRE") val genre: String,
-    @Column(name = "DIRECTOR") val director: String,
-    @Column(name = "WRITER") val writer: String,
-    @Column(name = "ACTORS") val actors: String,
-    @Column(name = "PLOT") val plot: String,
-    @Column(name = "LANGUAGE") val language: String,
-    @Column(name = "COUNTRY") val country: String,
-    @Column(name = "POSTER") val poster: String,
-    @Column(name = "IMDB_ID") val imdbID: String,
-    @Column(name = "IMDB_RATING") val imdbRating: String,
-    @Column(name = "PRODUCTION") val production: String,
-    @Column(name = "WEBSITE") val website: String,
-    @OneToMany
-    @JoinColumn(name = "RATING_ID", referencedColumnName = "ID")
-    val ratings: List<RatingRow>
+    @Column(name = "IMDB_ID")
+    val imdbId: String? = null,
+    @Column(name = "TITLE") val title: String? = null,
+    @Column(name = "MOVIE_YEAR") val year: String? = null,
+    @Column(name = "RATED") val rated: String? = null,
+    @Column(name = "RELEASED") val released: String? = null,
+    @Column(name = "RUNTIME") val runtime: String? = null,
+    @Column(name = "GENRE") val genre: String? = null,
+    @Column(name = "DIRECTOR") val director: String? = null,
+    @Column(name = "WRITER") val writer: String? = null,
+    @Column(name = "ACTORS") val actors: String? = null,
+    @Column(name = "PLOT") val plot: String? = null,
+    @Column(name = "MOVIE_LANGUAGE") val language: String? = null,
+    @Column(name = "COUNTRY") val country: String? = null,
+    @Column(name = "POSTER") val poster: String? = null,
+    @Column(name = "IMDB_RATING") val imdbRating: String? = null,
+    @Column(name = "PRODUCTION") val production: String? = null,
+    @Column(name = "WEBSITE") val website: String? = null,
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "movieId", cascade = [CascadeType.ALL])
+    val ratings: List<RatingRow>? = null
 ) {
 
     companion object {
@@ -57,35 +57,35 @@ class MovieRow(
                     language = language.value,
                     country = country.value,
                     poster = poster.value,
-                    imdbID = imdbID.value,
+                    imdbId = imdbId.value,
                     imdbRating = imdbRating.value,
                     production = production.value,
                     website = website.value,
-                    ratings = ratings.map { RatingRow.fromEntity(it) }
+                    ratings = ratings.map { RatingRow.fromEntity(it, movie) }
                 )
             }
     }
 
     fun toEntity() =
         Movie(
-            title = StringVO(title, 1, 10, "title"),
-            year = StringVO(year, 1, 10, "year"),
-            rated = StringVO(rated, 1, 10, "rated"),
-            released = StringVO(released, 1, 10, "released"),
-            runtime = StringVO(runtime, 1, 10, "runtime"),
-            genre = StringVO(genre, 1, 10, "genre"),
-            director = StringVO(director, 1, 10, "director"),
-            writer = StringVO(writer, 1, 10, "writer"),
-            actors = StringVO(actors, 1, 10, "actors"),
-            plot = StringVO(plot, 1, 10, "plot"),
-            language = StringVO(language, 1, 10, "language"),
-            country = StringVO(country, 1, 10, "country"),
-            poster = StringVO(poster, 1, 10, "poster"),
-            imdbID = StringVO(imdbID, 1, 10, "imdbID"),
-            imdbRating = StringVO(imdbRating, 1, 10, "imdbRating"),
-            production = StringVO(production, 1, 10, "production"),
-            website = StringVO(website, 1, 10, "website"),
-            ratings = ratings.map { it.toEntity() }
+            title = StringVO(title!!, 1, 500, "title"),
+            year = StringVO(year!!, 1, 500, "year"),
+            rated = StringVO(rated!!, 1, 500, "rated"),
+            released = StringVO(released!!, 1, 500, "released"),
+            runtime = StringVO(runtime!!, 1, 500, "runtime"),
+            genre = StringVO(genre!!, 1, 500, "genre"),
+            director = StringVO(director!!, 1, 500, "director"),
+            writer = StringVO(writer!!, 1, 500, "writer"),
+            actors = StringVO(actors!!, 1, 500, "actors"),
+            plot = StringVO(plot!!, 1, 500, "plot"),
+            language = StringVO(language!!, 1, 500, "language"),
+            country = StringVO(country!!, 1, 500, "country"),
+            poster = StringVO(poster!!, 1, 500, "poster"),
+            imdbId = StringVO(imdbId!!, 1, 500, "imdbID"),
+            imdbRating = StringVO(imdbRating!!, 1, 500, "imdbRating"),
+            production = StringVO(production!!, 1, 500, "production"),
+            website = StringVO(website!!, 1, 500, "website"),
+            ratings = ratings!!.map { it.toEntity() }
         )
 }
 
@@ -93,25 +93,29 @@ class MovieRow(
 @Table(name = "RATING")
 class RatingRow(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
-    @Column(name = "SOURCE") val source: String,
-    @Column(name = "VALUE") val value: String
+    @Column(name = "SOURCE") val source: String? = null,
+    @Column(name = "RATING_VALUE") val value: String? = null,
+    @ManyToOne
+    @JoinColumn(name = "MOVIE_ID", referencedColumnName = "IMDB_ID")
+    val movieId: MovieRow? = null
 ) {
 
     companion object {
-        fun fromEntity(rating: Rating): RatingRow =
+        fun fromEntity(rating: Rating, movie: Movie): RatingRow =
             rating.run {
                 RatingRow(
+                    id = Random().nextInt(10000),
                     source = source.value,
-                    value = value.value
+                    value = value.value,
+                    movieId = MovieRow(imdbId = movie.imdbId.value)
                 )
             }
     }
 
     fun toEntity() =
         Rating(
-            source = StringVO(source, 5, 100, "ratingSource"),
-            value = StringVO(value, 5, 100, "ratingValue")
+            source = StringVO(source!!, 1, 500, "ratingSource"),
+            value = StringVO(value!!, 1, 500, "ratingValue")
         )
 }

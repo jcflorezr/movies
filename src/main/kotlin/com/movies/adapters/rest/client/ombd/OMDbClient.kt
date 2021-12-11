@@ -1,6 +1,7 @@
 package com.movies.adapters.rest.client.ombd
 
 import com.movies.adapters.rest.client.ombd.model.MovieOMDbResponse
+import com.movies.domain.exception.MoviesException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.http.HttpMethod
@@ -33,7 +34,7 @@ class OMDbClient(
         return restTemplate.exchange(
             RequestEntity<MovieOMDbResponse>(HttpMethod.GET, URI.create("?i=$movieId&$oMDbApiKey")),
             MovieOMDbResponse::class.java
-        ).body!!
+        ).body ?: throw MoviesException("No body found in OMDb API response.")
     }
 
 }

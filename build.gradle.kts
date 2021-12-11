@@ -6,11 +6,26 @@ plugins {
     war
     kotlin("jvm") version "1.6.0"
     kotlin("plugin.spring") version "1.6.0"
+    kotlin("plugin.jpa") version "1.6.0"
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.6.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:1.6.0")
+        classpath("org.jetbrains.kotlin:kotlin-noarg:1.6.0")
+    }
 }
 
 group = "com.movies"
 version = "1.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+ext["junit-jupiter.version"]   = "5.4.0"
 
 repositories {
     mavenCentral()
@@ -30,11 +45,12 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("commons-validator:commons-validator:1.7")
-    compileOnly("org.projectlombok:lombok:1.18.22")
-    annotationProcessor("org.projectlombok:lombok:1.18.22")
+    runtimeOnly("org.postgresql:postgresql")
+    implementation("org.apache.commons:commons-lang3:3.12.0")
+    testImplementation("org.testcontainers:postgresql:1.16.2")
 }
 
-tasks.test {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
 
