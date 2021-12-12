@@ -1,66 +1,67 @@
 package com.movies.adapters.rest.client.ombd.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.movies.domain.entity.Movie
 import com.movies.domain.entity.Rating
 import com.movies.domain.vo.StringVO
 
 data class MovieOMDbResponse(
-    val title: String,
-    val year: String,
-    val rated: String,
-    val released: String,
-    val runtime: String,
-    val genre: String,
-    val director: String,
-    val writer: String,
-    val actors: String,
-    val plot: String,
-    val language: String,
-    val country: String,
-    val awards: String,
-    val poster: String,
-    val ratings: List<RatingResponse>,
-    val metaScore: String,
-    val imdbRating: String,
-    val imdbVotes: String,
-    val imdbId: String,
-    val type: String,
-    val dvd: String,
-    val boxOffice: String,
-    val production: String,
-    val website: String,
-    val response: String
+    @JsonProperty("Title") val title: String,
+    @JsonProperty("Year") val year: String,
+    @JsonProperty("Rated") val rated: String,
+    @JsonProperty("Released") val released: String,
+    @JsonProperty("Runtime") val runtime: String,
+    @JsonProperty("Genre") val genre: String,
+    @JsonProperty("Director") val director: String,
+    @JsonProperty("Writer") val writer: String,
+    @JsonProperty("Actors") val actors: String,
+    @JsonProperty("Plot") val plot: String,
+    @JsonProperty("Language") val language: String,
+    @JsonProperty("Country") val country: String,
+    @JsonProperty("Awards") val awards: String,
+    @JsonProperty("Poster") val poster: String,
+    @JsonProperty("Ratings") val ratings: List<RatingResponse>,
+    @JsonProperty("Metascore") val metaScore: String,
+    @JsonProperty("imdbRating") val imdbRating: String,
+    @JsonProperty("imdbVotes") val imdbVotes: String,
+    @JsonProperty("imdbID") val imdbId: String,
+    @JsonProperty("Type") val type: String,
+    @JsonProperty("DVD") val dvd: String,
+    @JsonProperty("BoxOffice") val boxOffice: String,
+    @JsonProperty("Production") val production: String,
+    @JsonProperty("Website") val website: String,
+    @JsonProperty("Response") val response: String
 ) {
     fun toEntity() =
         Movie(
-            title = StringVO(title, 1, 10, "title"),
-            year = StringVO(year, 1, 10, "year"),
-            rated = StringVO(rated, 1, 10, "rated"),
-            released = StringVO(released, 1, 10, "released"),
-            runtime = StringVO(runtime, 1, 10, "runtime"),
-            genre = StringVO(genre, 1, 10, "genre"),
-            director = StringVO(director, 1, 10, "director"),
-            writer = StringVO(writer, 1, 10, "writer"),
-            actors = StringVO(actors, 1, 10, "actors"),
-            plot = StringVO(plot, 1, 10, "plot"),
-            language = StringVO(language, 1, 10, "language"),
-            country = StringVO(country, 1, 10, "country"),
-            poster = StringVO(poster, 1, 10, "poster"),
-            imdbId = StringVO(imdbId, 1, 10, "imdbID"),
-            imdbRating = StringVO(imdbRating, 1, 10, "imdbRating"),
-            production = StringVO(production, 1, 10, "production"),
-            website = StringVO(website, 1, 10, "website"),
+            title = StringVO(title, 1, 500, "title"),
+            year = StringVO(year, 1, 500, "year"),
+            rated = StringVO(rated, 1, 500, "rated"),
+            released = StringVO(released, 1, 500, "released"),
+            runtime = StringVO(runtime, 1, 500, "runtime"),
+            genre = StringVO(genre, 1, 500, "genre"),
+            director = StringVO(director, 1, 500, "director"),
+            writer = StringVO(writer, 1, 500, "writer"),
+            actors = StringVO(actors, 1, 500, "actors"),
+            plot = StringVO(plot, 1, 500, "plot"),
+            language = StringVO(language, 1, 500, "language"),
+            country = StringVO(country, 1, 500, "country"),
+            poster = StringVO(poster, 1, 500, "poster"),
+            imdbId = StringVO(imdbId, 1, 500, "imdbID"),
+            imdbRating = StringVO(imdbRating, 1, 500, "imdbRating"),
+            production = StringVO(production, 1, 500, "production"),
+            website = StringVO(website, 1, 500, "website"),
             ratings = ratings.map { it.toEntity() }
         )
 }
 
 data class RatingResponse(
-    val source: String,
-    val value: String
+    @JsonProperty("Source") val source: String,
+    @JsonProperty("Value") val value: String
 ) {
     fun toEntity() =
         Rating(
-            source = StringVO(source, 5, 100, "ratingSource"),
-            value = StringVO(value, 5, 100, "ratingValue")
+            source = StringVO(source, 1, 100, "ratingSource"),
+            value = StringVO(value, 1, 100, "ratingValue")
         )
 }

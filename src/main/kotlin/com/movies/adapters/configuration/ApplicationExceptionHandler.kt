@@ -16,4 +16,11 @@ class ApplicationExceptionHandler {
     fun handleDataValidationException(ex: DataValidationException): ErrorResponse {
         return ErrorResponse.of(ex)
     }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception::class)
+    @ResponseBody
+    fun handleGeneralError(ex: Exception): ErrorResponse {
+        return ErrorResponse.of(ex)
+    }
 }

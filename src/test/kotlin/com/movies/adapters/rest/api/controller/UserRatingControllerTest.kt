@@ -1,8 +1,10 @@
 package com.movies.adapters.rest.api.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.movies.adapters.rest.api.model.request.dummy.DummyMoviegoerRequest
 import com.movies.adapters.rest.api.model.request.dummy.DummyUserRatingRequest
 import com.movies.application.service.MovieService
+import com.movies.application.service.MoviegoerService
 import com.movies.application.service.UserRatingService
 import com.movies.domain.entity.dummy.DummyMovie
 import org.junit.jupiter.api.DisplayName
@@ -29,6 +31,8 @@ internal class UserRatingControllerTest {
     private lateinit var userRatingService: UserRatingService
     @MockBean
     private lateinit var movieService: MovieService
+    @MockBean
+    private lateinit var moviegoerService: MoviegoerService
 
     private val objectMapper: ObjectMapper = ObjectMapper()
 
@@ -45,6 +49,8 @@ internal class UserRatingControllerTest {
 
             val movieToReturn = DummyMovie.createNew()
             `when`(movieService.findByMovieId(movieId)).thenReturn(movieToReturn)
+            val moviegoerToReturn = DummyMoviegoerRequest.createNew().toEntity()
+            `when`(moviegoerService.findMoviegoer(moviegoerToReturn.userName.value)).thenReturn(moviegoerToReturn)
 
             mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/movies/$movieId/ratings")
@@ -69,11 +75,7 @@ internal class UserRatingControllerTest {
                 MockMvcRequestBuilders.post("/api/v1/movies/$movieId/ratings")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(requestPayload))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest)
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage.errorCode").value("invalid_field_value"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage.message").value("value is empty"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage.fieldName").value("moviegoerName"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound)
         }
 
         @Test

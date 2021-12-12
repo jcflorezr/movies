@@ -8,7 +8,7 @@ data class ErrorResponse(val errorMessage: Any) {
 
     companion object {
 
-        fun of(ex: DataValidationException): ErrorResponse {
+        fun of(ex: Exception): ErrorResponse {
             return ErrorResponse(errorMessage = ex)
         }
     }

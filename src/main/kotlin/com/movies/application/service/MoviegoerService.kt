@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service
 interface MoviegoerService {
 
     fun saveMoviegoer(moviegoer: Moviegoer)
+
+    fun findMoviegoer(moviegoerId: String): Moviegoer?
 }
 
 @Service
@@ -18,5 +20,10 @@ class MoviegoerServiceImpl(
     override fun saveMoviegoer(moviegoer: Moviegoer) {
         moviegoerDao.save(MoviegoerRow.fromEntity(moviegoer))
     }
+
+    override fun findMoviegoer(moviegoerId: String): Moviegoer? =
+        moviegoerDao.findById(moviegoerId)
+            .map { row -> row.toEntity() }
+            .orElse(null)
 
 }

@@ -21,3 +21,34 @@ open class BadRequestException(
             .add("suggestion=$suggestion")
             .toString()
 }
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+open class InternalServerErrorException(
+    errorCode: String = "internal_error",
+    private val throwable: Throwable
+) : MoviesException(errorCode) {
+
+    override val message: String? = throwable.message ?: throwable.localizedMessage
+    private val simplifiedStackTrace: List<SimplifiedStackTraceElement>
+
+    init {
+        simplifiedStackTrace = generateSimplifiedStackTrace(throwable.stackTrace)
+    }
+
+    private fun generateSimplifiedStackTrace(
+        stackTraceElements: Array<StackTraceElement>
+    ) = stackTraceElements.asSequence().groupByTo(
+        destination = LinkedHashMap(),
+        keySelector = { it.className },
+        valueTransform = { it.lineNumber }
+    ).map { SimplifiedStackTraceElement(it.key, it.value) }
+
+    override fun toString(): String {
+        return "InternalServerErrorException(ex=$throwable, message=$message, simplifiedStackTrace=$simplifiedStackTrace)"
+    }
+
+    data class SimplifiedStackTraceElement(
+        val className: String,
+        val lines: List<Int>
+    )
+}

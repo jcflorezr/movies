@@ -25,7 +25,11 @@ class DummyMovie {
             imdbId: String = "tt0232500",
             production: String = "N/A",
             website: String = "N/A",
-            ratings: List<Rating> = listOf(DummyRating.createNew())
+            ratings: List<Rating> = listOf(
+                DummyRating.createNew(source = "Internet Movie Database", value = "6.8/10"),
+                DummyRating.createNew(source = "Rotten Tomatoes", value = "54%"),
+                DummyRating.createNew(source = "Metacritic", value = "58/100")
+            )
         ): Movie =
             Movie(
                 title = StringVO(title, 1, 500, "title"),
